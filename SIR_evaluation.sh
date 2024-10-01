@@ -7,11 +7,11 @@ do
     do
         if [ "$network" = "SF" ] || [ "$network" = "SW" ];
             then
-            python3 SIR_evaluation_multipart.py ${network}_combined True results/${network}/${gamma} results_dup ${gamma}
+            python3 SIR_evaluation_multipart.py ${network}_combined False results/${network}/${gamma} results/${gamma} ${gamma}
         else
             for idx in 1 2 3;
             do
-            python3 SIR_evaluation_multipart.py ${network}_${idx} True results/${network}/${gamma} results_dup ${gamma}
+            python3 SIR_evaluation_multipart.py ${network}_${idx} False results/${network}/${gamma} results/${gamma} ${gamma}
             done
         fi
     done

@@ -108,6 +108,13 @@ def create_sample_df(net_idx,algo,sample_array_2d,sir_df0,rm_dup):
 
 print("process starts!")
 
+network_files =  transfer_read_del_file(args.network_filename,'')
+OG_sample_size = pd.DataFrame([(i,len(G.nodes())) for i,G in enumerate(network_files)],
+                                columns=['net_idx','sample_size']
+                                )
+del network_files
+sample_dict = transfer_read_del_file(args.network_filename,'samples')
+
 for cnt in range(0,10000,1000):
     end = cnt+1000
     net_filename = f"{args.network_filename}_{cnt}_{end}_{args.gamma}"
@@ -129,15 +136,9 @@ for cnt in range(0,10000,1000):
     OG_df['algo'] = 'OG'
     OG_df['walk_idx'] = -1
 
-    network_files =  transfer_read_del_file(args.network_filename,'')
-    OG_sample_size = pd.DataFrame([(i,len(G.nodes())) for i,G in enumerate(network_files)],
-                                columns=['net_idx','sample_size']
-                                )
-    del network_files
     OG_df = pd.merge(OG_df,OG_sample_size,how='inner',on=['net_idx'])
-    write_transfer_del_file(OG_df,args.network_filename,f"{cnt}_{end}_OG_SIR_agg",args.dest_dir)
+    write_transfer_del_file(OG_df,args.network_filename,f"{cnt}_{end}_{args.gamma}_OG_SIR_agg",args.dest_dir)
 
-    sample_dict = transfer_read_del_file(args.network_filename,'samples')
     for key, value in sample_dict.items():
         req_samples = value[cnt:end]
         print(f"{key} starts")
@@ -151,7 +152,7 @@ for cnt in range(0,10000,1000):
 
         df = pd.concat(df_ls, axis=0, ignore_index=True)
 
-        write_transfer_del_file(df,args.network_filename,f"{cnt}_{end}_{key}_SIR_agg",args.dest_dir)
+        write_transfer_del_file(df,args.network_filename,f"{cnt}_{end}_{key}_{args.gamma}_SIR_agg",args.dest_dir)
 
         
 

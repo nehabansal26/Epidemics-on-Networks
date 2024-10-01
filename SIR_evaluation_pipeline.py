@@ -10,6 +10,7 @@ parser = argparse.ArgumentParser(description="Process some integers.")
 parser.add_argument('network', type=str, help='Network name')  # Argument for the network name
 parser.add_argument('start', type=int, help='Network starting index')  # Argument for the starting index of the network
 parser.add_argument('end', type=int, help='Network ending index')  # Argument for the ending index of the network
+parser.add_argument('gamma', type=int, help='Recovery rate parameter')  # Argument for recovery rate
 parser.add_argument('dup', type=str, help='Remove duplicates from sample')  # Argument to determine if duplicates should be removed
 parser.add_argument('sir_dir', type=str, help='Location for fetching results')  # Directory for SIR results
 parser.add_argument('net_dir', type=str, help='Location for fetching network files')  # Directory for network files
@@ -72,7 +73,7 @@ def create_sample_df(net_idx, algo, sample_array_2d, sir_df0, rm_dup):
 
 print("process starts!")  # Indicate that the processing has started
 # Load SIR results from a pickle file
-sir_files = pickle.load(open(f"{args.sir_dir}/{args.network}_{args.start}_{args.end}.pkl", "rb"))
+sir_files = pickle.load(open(f"{args.sir_dir}/{args.network}_{args.start}_{args.end}_{args.gamma}.pkl", "rb"))
 sir_df = pd.DataFrame(sir_files, columns=['net_idx', 'beta', 'node_idx', 'inf_time', 'second_inf'])  # Convert loaded data to DataFrame
 # Aggregate original SIR data to get means and counts
 OG_df = sir_df.groupby(['beta', 'net_idx'])\
@@ -94,7 +95,7 @@ del network_files  # Delete the network files variable to free up memory
 OG_df = pd.merge(OG_df, OG_sample_size, how='inner', on=['net_idx'])
 
 # Save the original aggregated results to a pickle file
-with open(f"{args.dest_dir}/{args.network}_{args.start}_{args.end}_OG.pkl", "wb") as f:
+with open(f"{args.dest_dir}/{args.network}_{args.start}_{args.end}_{args.gamma}_OG.pkl", "wb") as f:
     pickle.dump(OG_df, f)  # Serialize and save the DataFrame
 
 # Load sampled data from a pickle file
@@ -110,5 +111,5 @@ for key, value in sample_dict.items():
     df = pd.concat(df_ls, axis=0, ignore_index=True)
 
     # Save the concatenated DataFrame to a pickle file
-    with open(f"{args.dest_dir}/{args.network}_{args.start}_{args.end}_{key}.pkl", "wb") as f:
+    with open(f"{args.dest_dir}/{args.network}_{args.start}_{args.end}_{args.gamma}_{key}.pkl", "wb") as f:
         pickle.dump(df, f)  # Serialize and save the DataFrame

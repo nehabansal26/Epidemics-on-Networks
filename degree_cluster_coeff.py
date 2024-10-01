@@ -9,7 +9,7 @@ import networkx as nx  # Import NetworkX for creating and analyzing complex netw
 parser = argparse.ArgumentParser(description="Process some integers.")
 parser.add_argument('network', type=str, help='Network file name')  # Argument for the network file name
 parser.add_argument('start', type=int, help='Starting index for network file')  # Starting index of the network file
-parser.add_argument('end', type=int, help='Ending index for network file')  # Ending index of the network file
+parser.add_argument('end', type=int, help='Ending index for network file')  # Ending index of the network filex
 parser.add_argument('net_dir', type=str, help='Directory for network files')  # Directory containing network files
 parser.add_argument('sample_dir', type=str, help='Directory for sample files')  # Directory containing sample files
 parser.add_argument('dest_dir', type=str, help='Directory for saving results')  # Directory for saving output files
