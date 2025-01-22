@@ -16,17 +16,17 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/nehabansal26/Epidemics-on-Networks.git
-```markdown
+```
 Navigate to the repository folder:
 
 ```bash
 cd Epidemics-on-Networks
-```markdown
+```
 Ensure you have the necessary Python dependencies. Install them using pip:
 
 ```bash
 pip install -r requirements.txt
-```markdown
+```
 ## Usage
 
 The repository provides several scripts for different tasks related to epidemic modeling. Below are the steps for using the scripts.
@@ -35,41 +35,42 @@ The repository provides several scripts for different tasks related to epidemic 
 This step generates random samples from a network based on the given parameters.
 ```bash
 python3 sample_generation.py <network> <start> <end> <sample_size> <walks> <net_dir> <sample_dir>
-```markdown
-- network: The type of the network (e.g., bcms).
-- start: The start time for the simulation.
-- end: The end time for the simulation.
-- sample_size: The number of samples to generate.
-- walks: The number of walks per sample.
-- net_dir: Directory where the network data is stored.
-- sample_dir: Directory where the generated samples will be saved.
+```
+- **network:** The type of the network (e.g., bcms).
+- **start:** The start time for the simulation.
+- **end:** The end time for the simulation.
+- **sample_size:** The number of samples to generate.
+- **walks:** The number of walks per sample.
+- **net_dir:** Directory where the network data is stored.
+- **sample_dir:** Directory where the generated samples will be saved.
 
 ### Step 2: SIR Simulation
 This step runs the SIR model simulation on the network and generates the disease spread data.
 ```bash
 python3 SIR_simulation.py <network> <start> <end> <gamma> <net_dir> <sir_dir>
-```markdown
-- gamma: Recovery rate for the SIR model.
--sir_dir: Directory where the simulation results will be stored.
+```
+- **gamma:** Recovery rate for the SIR model.
+- **sir_dir:** Directory where the simulation results will be stored.
 
 ### Step 3: Disease Metric Estimation
 This step estimates disease metrics based on the simulation results.
 ```bsh
 python3 disease_metric_estimation.py <network> <start> <end> <gamma> <dup> <sir_dir> <net_dir> <sample_dir> <agg_results>
-```markdown
-- dup: Flag indicating whether duplicate nodes are allowed in the sample.
-- sir_dir: Directory containing the simulation results.
-- agg_results: Directory for storing the aggregated results.
+```
+- **dup:** Flag indicating whether duplicate nodes are allowed in the sample.
+- **sir_dir:** Directory containing the simulation results.
+- **agg_results:** Directory for storing the aggregated results.
 
 ### Step 4: Degree Distribution
 This step generates degree distribution statistics for the network.
 ```bash
 python3 degree_distribution.py <network> <start> <end> <net_dir> <sample_dir> <agg_results>
-```markdown
-- agg_results: Directory containing the aggregated results.
+```
+- **agg_results:** Directory containing the aggregated results.
 
 ## Example Workflow
 Here’s an example workflow for running all steps sequentially:
+
 **Step 1:** Generate samples
 python3 sample_generation.py bcms 0 100 10 2 networks samples
 
