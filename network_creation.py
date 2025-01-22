@@ -66,11 +66,11 @@ parser = argparse.ArgumentParser(description="Process some integers.")
 
 # Define command-line arguments
 parser.add_argument('network_type', type=str, help='Name of the network')
-parser.add_argument('epochs', type=int, help='The number of epochs for network creation')
+parser.add_argument('epochs', type=int, help='The number of networks after which to append the results in the list')
 parser.add_argument('dest_dir', type=str, help='Directory for storing results')
 parser.add_argument('num_cores', type=int, help='number of cores for threading')
-parser.add_argument('start', type=int, help='network start idx')
-parser.add_argument('end', type=int, help='network end idx')
+parser.add_argument('start', type=int, help='network list start idx')
+parser.add_argument('end', type=int, help='network list end idx')
 
 # Parse the command-line arguments
 args = parser.parse_args()

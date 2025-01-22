@@ -81,16 +81,12 @@ def main(filename, st, end, gamma_, source_dir, dest_dir):
     if filename.find("bcms") >= 0:  # Check if the filename contains "bcms"
         with open(f'{source_dir}/{filename}.pkl', 'rb') as f:  # Load the network data
             G = pickle.load(f)
-            # Create a mapping from node to index for relabeling
-            node_idx = {node: i for i, node in enumerate(G.nodes())}
-            net = nx.relabel_nodes(G, node_idx)  # Relabel nodes in the graph
-            networks_ls = [net] * end  # Create a list of the same network repeated 'end' times
+            networks_ls = [G] * end  # Create a list of the same network repeated 'end' times
     else:
         # Load networks based on the given filename and indices
-        # with open(f'{source_dir}/{filename}_{st}_{end}.pkl', 'rb') as f:
-        #     networks_ls = pickle.load(f)
-        with open(f'{source_dir}/{filename}.pkl', 'rb') as f:
-            networks_ls = pickle.load(f)[st:end]
+        with open(f'{source_dir}/{filename}_{st}_{end}.pkl', 'rb') as f:
+            networks_ls = pickle.load(f)
+        
 
     print(f"Read network file!")  # Inform user that the network file has been read
     SIR_dict = []  # Initialize a list to hold results
@@ -100,7 +96,7 @@ def main(filename, st, end, gamma_, source_dir, dest_dir):
         # Process each network in the list with a progress bar
         for cnt_G, G in enumerate(tqdm(networks_ls, total=len(networks_ls))):
             req_dict = process_network(G, beta, initial_I, cnt_G, gamma)  # Process the network
-            SIR_dict.append(req_dict)  # Append the results to the SIR_dict list
+            SIR_dict.extend(req_dict)  # Append the results to the SIR_dict list
             
     print("Starting to write pickle file!")  # Inform user that results are being saved
     # Save the SIR results to a pickle file
@@ -108,16 +104,6 @@ def main(filename, st, end, gamma_, source_dir, dest_dir):
         pickle.dump(SIR_dict, f)  # Serialize and save the results
     print(f"{filename} done!")  # Notify that processing for the filename is complete
 
-    # Uncomment below to send the file to a remote server using SCP
-    result = subprocess.run(f"scp {dest_dir}/{filename}_{st}_{end}_{gamma_}.pkl neha@siren.maths.cf.ac.uk:/home/neha/results/"
-                            , shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    print(result.stdout)  # Print standard output of the SCP command
-
-    if result.stderr:  # Check for errors during the SCP operation
-        print("Error:")
-        print(result.stderr)
-
-    os.remove(f"{dest_dir}/{filename}_{st}_{end}_{gamma_}.pkl")  # Uncomment to remove the local file
 
 # Set up argument parsing for command-line execution
 parser = argparse.ArgumentParser(description="Process some integers.")

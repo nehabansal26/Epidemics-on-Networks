@@ -8,11 +8,11 @@ import networkx as nx  # Import NetworkX for working with graph data structures
 # Set up argument parsing for command-line execution
 parser = argparse.ArgumentParser(description="Process some integers.")
 parser.add_argument('network', type=str, help='Network name')  # Argument for the network name
-parser.add_argument('start', type=int, help='Network starting index')  # Argument for the starting index of the network
-parser.add_argument('end', type=int, help='Network ending index')  # Argument for the ending index of the network
+parser.add_argument('start', type=int, help='Network list starting index')  # Argument for the starting index of the network
+parser.add_argument('end', type=int, help='Network list ending index')  # Argument for the ending index of the network
 parser.add_argument('gamma', type=int, help='Recovery rate parameter')  # Argument for recovery rate
 parser.add_argument('dup', type=str, help='Remove duplicates from sample')  # Argument to determine if duplicates should be removed
-parser.add_argument('sir_dir', type=str, help='Location for fetching results')  # Directory for SIR results
+parser.add_argument('sir_dir', type=str, help='Location for fetching SIR simulation results')  # Directory for SIR results
 parser.add_argument('net_dir', type=str, help='Location for fetching network files')  # Directory for network files
 parser.add_argument('sample_dir', type=str, help='Location for fetching sample data')  # Directory for sample data
 parser.add_argument('dest_dir', type=str, help='Location for saving results')  # Directory for saving results
@@ -86,7 +86,10 @@ OG_df['algo'] = 'OG'  # Add a column indicating the algorithm type
 OG_df['walk_idx'] = -1  # Set walk index to -1 for original data
 
 # Load network files from a pickle file
-network_files = pickle.load(open(f"{args.net_dir}/{args.network}_{args.start}_{args.end}.pkl", "rb"))
+if args.network.find("bcms")>=0:
+    network_files = [pickle.load(open(f"{args.net_dir}/{args.network}.pkl", "rb"))]
+else:
+    network_files = pickle.load(open(f"{args.net_dir}/{args.network}_{args.start}_{args.end}.pkl", "rb"))
 # Create a DataFrame for original sample sizes
 OG_sample_size = pd.DataFrame([(i, len(G.nodes())) for i, G in enumerate(network_files)],
                               columns=['net_idx', 'sample_size'])

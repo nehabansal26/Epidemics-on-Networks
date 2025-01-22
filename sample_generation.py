@@ -89,11 +89,6 @@ def process_network(net_type, net_ls_st, net_ls_end, sample_size, walks, source_
 
     # Iterate over each network and perform sampling
     for net in tqdm(network_ls, total=len(network_ls)):
-        if net_type.find("bcms") >= 0:
-            ## Relabel nodes only if it's BCMS data
-            node_idx = {node: i for i, node in enumerate(net.nodes())}  # Create a mapping of nodes to indices
-            net = nx.relabel_nodes(net, node_idx)  # Relabel nodes in the network
-        
         for algo in ['RW', 'MHRW']:
             # Generate samples for each algorithm and store them
             sample_array = get_samples(G=net, algo=algo, num_samples=sample_size + 500, num_walks=walks)[:, 500:]
